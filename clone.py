@@ -52,6 +52,7 @@ print('Input shape is {:}'.format(input_shape))
 # Build a LeNet like neural network
 model = Sequential()
 # cropping the images to remove useless pixels
+# TO DO: cropped size to be tuned significantly
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=input_shape))
 model.add(Lambda(lambda x: (x / 255.0) - 0.5))
 model.add(Convolution2D(6, 5, 5, activation="relu"))
