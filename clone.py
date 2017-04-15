@@ -2,13 +2,13 @@ import csv
 import cv2
 import numpy as np
 
-lines = []
-images = []
-measurements = []
+lines = [] # list of image names
+images = [] # list of images
+measurements = [] # list of steering angles
 correction = 0.1 # obtained by tuning
-cnt = 0
 
 def read_image_info(lines, folder_name):
+    """read the names of images in a given folder"""
     with open(folder_name + '/driving_log.csv') as csvfile:
         reader = csv.reader(csvfile)
         for line in reader:
@@ -16,8 +16,8 @@ def read_image_info(lines, folder_name):
     return lines
 
 def read_image_and_steering(images, measurements, lines, folder_name):
-    # update the images and measurements based on
-    # the info from driving_log.csv
+    """update the images and measurements based on
+        the info from driving_log.csv"""
     cnt = len(images)
     for line in lines[cnt:]:
         source_path = line[0]
@@ -36,13 +36,18 @@ def read_image_and_steering(images, measurements, lines, folder_name):
         cnt += 1
     return images, measurements
 
-# read in the image info in the folder Data
-data_list = ['Data_1st_lap','Data_2nd_lap','Data_3rd_lap', 'Data_turn_lap', 'Data_correct_direction']
+# specify the list of folders to read data
+# data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap',\
+#        'Data_correct_direction_1', 'Data_correct_direction_2',\
+#        'Data_track_2']
+data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap', \
+        'Data_correct_direction_1', 'Data_correct_direction_2']
+
 for data in data_list:
     lines = read_image_info(lines, data)
     images, measurements = read_image_and_steering(images, measurements, lines, data)
 
-# augment data by flipping the existing iamges
+# augment data by flipping the existing iamges and steering angles
 augmented_images, augmented_measurements =[], []
 for image, measurement in zip(images, measurements):
     augmented_images.append(image)
@@ -50,12 +55,12 @@ for image, measurement in zip(images, measurements):
     augmented_images.append(cv2.flip(image,1))
     augmented_measurements.append(measurement*-1)
 
-
+# treat the augmented images/measurements as the entire data
 X_train = np.array(augmented_images)
 y_train = np.array(augmented_measurements)
 
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda
+from keras.layers import Flatten, Dense, Lambda, Dropout
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
@@ -63,19 +68,20 @@ from keras.layers import Cropping2D
 input_shape = X_train[0].shape
 print('Input shape is {:}'.format(input_shape))
 
-# Build a LeNet like neural network
+# Build a Nvidia like neural network
 model = Sequential()
-# cropping the images to remove useless pixels
-# TO DO: cropped size to be tuned significantly
+# use Lambda function to normalize the images
 model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=input_shape))
+# cropping the images to remove useless pixels
 model.add(Cropping2D(cropping=((70,25), (0,0))))
 model.add(Convolution2D(24,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(36,5,5,subsample=(2,2),activation="relu"))
 model.add(Convolution2D(48,5,5,subsample=(2,2),activation="relu"))
-model.add(Convolution2D(64,3,3, activation="relu"))
+# model.add(Convolution2D(64,3,3, activation="relu"))
 model.add(Convolution2D(64,3,3, activation="relu"))
 model.add(Flatten())
 model.add(Dense(100))
+model.add(Dropout(0.5))
 model.add(Dense(50))
 model.add(Dense(10))
 model.add(Dense(1))
