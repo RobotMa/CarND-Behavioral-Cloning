@@ -37,10 +37,10 @@ def read_image_and_steering(images, measurements, lines, folder_name):
     return images, measurements
 
 # read in the image info in the folder Data
-# lines = read_image_info(lines, 'Data')
-# images, measurements = read_image_and_steering(images, measurements, lines, 'Data')
-lines = read_image_info(lines, 'Data1')
-images, measurements = read_image_and_steering(images, measurements, lines, 'Data1')
+data_list = ['Data_1st_lap','Data_2nd_lap','Data_3rd_lap', 'Data_turn_lap', 'Data_correct_direction']
+for data in data_list:
+    lines = read_image_info(lines, data)
+    images, measurements = read_image_and_steering(images, measurements, lines, data)
 
 # augment data by flipping the existing iamges
 augmented_images, augmented_measurements =[], []
@@ -81,6 +81,6 @@ model.add(Dense(10))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=3)
+model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=3, verbose=1)
 
 model.save('model.h5')

@@ -1,3 +1,4 @@
 *.h5
-Data/
-Data1/
+Data*
+*.zip
+carnd@*
