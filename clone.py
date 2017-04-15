@@ -3,30 +3,44 @@ import cv2
 import numpy as np
 
 lines = []
-with open('Data/driving_log.csv') as csvfile:
-    reader = csv.reader(csvfile)
-    for line in reader:
-        lines.append(line)
-
 images = []
 measurements = []
 correction = 0.1 # obtained by tuning
 cnt = 0
-for line in lines:
-    source_path = line[0]
-    filename = source_path.split('/')[-1]
-    current_path = 'Data/IMG/' + filename
-    image = cv2.imread(current_path)
-    images.append(image)
 
-    # adjusted steering measurements for the side camera images
-    if cnt % 3 == 0: # center image
-        measurements.append(float(line[3]))
-    elif cnt % 3 == 1: # left image
-        measurements.append(float(line[3]) + correction)
-    elif cnt % 3 == 2: # right image
-        measurements.append(float(line[3]) - correction)
-    cnt += 1
+def read_image_info(lines, folder_name):
+    with open(folder_name + '/driving_log.csv') as csvfile:
+        reader = csv.reader(csvfile)
+        for line in reader:
+            lines.append(line)
+    return lines
+
+def read_image_and_steering(images, measurements, lines, folder_name):
+    # update the images and measurements based on
+    # the info from driving_log.csv
+    cnt = len(images)
+    for line in lines[cnt:]:
+        source_path = line[0]
+        filename = source_path.split('/')[-1]
+        current_path = folder_name + '/IMG/' + filename
+        image = cv2.imread(current_path)
+        images.append(image)
+
+        # adjusted steering measurements for the side camera images
+        if cnt % 3 == 0: # center image
+            measurements.append(float(line[3]))
+        elif cnt % 3 == 1: # left image
+            measurements.append(float(line[3]) + correction)
+        elif cnt % 3 == 2: # right image
+            measurements.append(float(line[3]) - correction)
+        cnt += 1
+    return images, measurements
+
+# read in the image info in the folder Data
+# lines = read_image_info(lines, 'Data')
+# images, measurements = read_image_and_steering(images, measurements, lines, 'Data')
+lines = read_image_info(lines, 'Data1')
+images, measurements = read_image_and_steering(images, measurements, lines, 'Data1')
 
 # augment data by flipping the existing iamges
 augmented_images, augmented_measurements =[], []
@@ -53,8 +67,8 @@ print('Input shape is {:}'.format(input_shape))
 model = Sequential()
 # cropping the images to remove useless pixels
 # TO DO: cropped size to be tuned significantly
-model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=input_shape))
-model.add(Lambda(lambda x: (x / 255.0) - 0.5))
+model.add(Lambda(lambda x: (x / 255.0) - 0.5, input_shape=input_shape))
+model.add(Cropping2D(cropping=((7,25), (0,0))))
 model.add(Convolution2D(6, 5, 5, activation="relu"))
 model.add(MaxPooling2D())
 model.add(Flatten())
