@@ -101,13 +101,13 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 160 x 320 x 3 RGB image   					| 
 | Cropping2D            | outputs 65 x 320 x 3 RGB image                | 
-| Convolution 5x5     	| 5x5 stride, valid padding, outputs 24x5x5 	|
+| Convolution 5x5     	| 2x2 submsample, valid padding                 |
 | Activation    		| relu  										|
-| Convolution 5x5	    | 5x5 stride, valid padding, outputs 10x10x16	|
-| Activation    		| relu        								    	|
-| Convolution 5x5     	| 5x5 stride, valid padding, outputs 28x28x6 	|
+| Convolution 5x5	    | 2x2 subsample, valid padding               	|
+| Activation    		| relu        						        	|
+| Convolution 5x5     	| 2x2 subsample, valid padding               	|
 | Activation    		| relu  										|
-| Convolution 5x5     	| 5x5 stride, valid padding, outputs 28x28x6 	|
+| Convolution 3x3      	| valid padding                              	|
 | Activation    		| relu  										|
 | Flatten				| output 400									|
 | Fully connected       | output 100       				   	    		|
