@@ -84,11 +84,12 @@ My first step was to use a convolution neural network model similar to the Lenet
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the model so that it has one fewer convolutional layer and one more dropout layer right after the first fully connected layer.
 
-Then I ... 
+Then I gathered more data by driving in the reverse direction, and driving for another two laps.  
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track such as at the bridge and the first turning spot beyond the bridge. To improve the driving behavior in these cases, I performed more driving specifically at the places which required sharp turns. This is very necessary because most parts of track 1 is straight which resulted in much more data of the vehicle driving straight. This will
+bias the network to drive the vehicle straight more often than it should. 
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
