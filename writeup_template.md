@@ -78,7 +78,7 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to start from a simple neural network and gradually modify and swith to more complicated neural networks based on the driving performance of fixed data sets. Then adding/removing convolutional layers and dropout layers is performed based on whether the network is overfitted or underfitted.  
 
 My first step was to use a convolution neural network model similar to the Lenet. I thought this model might be appropriate because it has a reasonable performance as the German traffic sign classifier. However, given two rounds of driving in the first track, the vehicle failed to drive in a stable manner in the autonomous mode. Then I switched to Nvidia neural network and the vehcile was at least able to drive straight stably. 
 
@@ -106,7 +106,7 @@ To capture good driving behavior, I first recorded three laps on track one using
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive back to the lane once it deviates. These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drive back to the lane once it deviates. These images show what a recovery looks like starting from the 1st to 3rd:
 
 ![alt text][image3]
 ![alt text][image4]
@@ -121,7 +121,7 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 
 Etc ....
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+After the collection process, I had X number of data points. I then preprocessed this data by adjusting the steering measurements for the side cameras' images, normalizing the images to fit the value of each pixel into the range of [-1, 1], and cropping the upper and lower parts of images by 70 and 25 rows of pixels respectively.   
 
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
