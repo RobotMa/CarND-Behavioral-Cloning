@@ -1,6 +1,11 @@
 import csv
 import cv2
 import numpy as np
+from keras.models import Sequential
+from keras.layers import Flatten, Dense, Lambda, Dropout
+from keras.layers.convolutional import Convolution2D
+from keras.layers.pooling import MaxPooling2D
+from keras.layers import Cropping2D
 
 lines = [] # list of image names
 images = [] # list of images
@@ -38,7 +43,7 @@ def read_image_and_steering(images, measurements, lines, folder_name):
 
 # specify the list of folders to read data
 data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap',\
-        'Data_correct_direction_1', 'Data_correct_direction_2',\
+        'Data_correct_direction_1', 'Data_correct_direction_2', 'Data_correct_direction_3',\
        'Data_turn_lap_1','Data_turn_lap_2', 'Data_track_2',\
        ]
 # data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap', \
@@ -59,12 +64,6 @@ for image, measurement in zip(images, measurements):
 # treat the augmented images/measurements as the entire data
 X_train = np.array(augmented_images)
 y_train = np.array(augmented_measurements)
-
-from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Dropout
-from keras.layers.convolutional import Convolution2D
-from keras.layers.pooling import MaxPooling2D
-from keras.layers import Cropping2D
 
 input_shape = X_train[0].shape
 print('Input shape is {:}'.format(input_shape))
