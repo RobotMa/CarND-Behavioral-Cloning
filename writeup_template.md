@@ -1,7 +1,5 @@
 # **Behavioral Cloning** 
 
-## Writeup Template
-
 ### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 
 ---
@@ -61,6 +59,8 @@ The model includes RELU layers to introduce nonlinearity (code line 20), and the
 #### 2. Attempts to reduce overfitting in the model
 
 The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+
+One convolutional layer is removed from the original Nvidia net to reduce overfitting as well.
 
 The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
