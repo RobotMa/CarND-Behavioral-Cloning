@@ -86,16 +86,35 @@ In order to gauge how well the model was working, I split my image and steering 
 
 To combat the overfitting, I modified the model so that it has one fewer convolutional layer and one more dropout layer right after the first fully connected layer.
 
-Then I gathered more data by driving in the reverse direction, and driving for another two laps.  
+Then I gathered more data by driving in the reverse direction, and another two laps in the default direction.  
 
 The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track such as at the bridge and the first turning spot beyond the bridge. To improve the driving behavior in these cases, I performed more driving specifically at the places which required sharp turns. This is very necessary because most parts of track 1 is straight which resulted in much more data of the vehicle driving straight. This will
-bias the network to drive the vehicle straight more often than it should. 
+bias the network to drive the vehicle straight more often than it should. Having more data of the vehicle turning will mitigate this bias. 
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 160 x 320 x 3 RGB image   					| 
+| Cropping2D            | outputs 65 x 320 x 3 RGB image                | 
+| Convolution 5x5     	| 5x5 stride, valid padding, outputs 24x5x5 	|
+| Activation    		| relu  										|
+| Convolution 5x5	    | 5x5 stride, valid padding, outputs 10x10x16	|
+| Activation    		| relu        								    	|
+| Convolution 5x5     	| 5x5 stride, valid padding, outputs 28x28x6 	|
+| Activation    		| relu  										|
+| Convolution 5x5     	| 5x5 stride, valid padding, outputs 28x28x6 	|
+| Activation    		| relu  										|
+| Flatten				| output 400									|
+| Fully connected       | output 100       				   	    		|
+| Dropout               | 0.5 keepprob                                  |
+| Fully connected       | output 50                                     |
+| Fully connected       | output 10                                     |
+| Fully connected       | output 1                                      |
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
@@ -120,7 +139,6 @@ To augment the data sat, I also flipped images and angles thinking that this wou
 ![alt text][image6]
 ![alt text][image7]
 
-Etc ....
 
 After the collection process, I had X number of data points. I then preprocessed this data by adjusting the steering measurements for the side cameras' images, normalizing the images to fit the value of each pixel into the range of [-1, 1], and cropping the upper and lower parts of images by 70 and 25 rows of pixels respectively.   
 
