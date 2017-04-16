@@ -116,7 +116,7 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Fully connected       | output 10                                     |
 | Fully connected       | output 1                                      |
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+Here is a visualization of the architecture
 
 ![alt text][image1]
 
