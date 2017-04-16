@@ -37,11 +37,10 @@ def read_image_and_steering(images, measurements, lines, folder_name):
     return images, measurements
 
 # specify the list of folders to read data
-# data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap',\
-#        'Data_correct_direction_1', 'Data_correct_direction_2',\
-#        'Data_track_2']
-data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap', \
-        'Data_correct_direction_1', 'Data_correct_direction_2']
+data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap',\
+       'Data_turn_lap', 'Data_track_2']
+# data_list = ['Data_1st_lap','Data_2nd_lap', 'Data_3rd_lap', \
+#        'Data_correct_direction_1', 'Data_correct_direction_2']
 
 for data in data_list:
     lines = read_image_info(lines, data)
