@@ -52,25 +52,25 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 24 and 64 (model.py lines 18-24) 
+My model is revised based on the Nvidia network. The revised model consists of 4 convolutional layers and four fully connected layers. (model.py lines 67-83) 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity (code line 72 - 77), and the data is normalized in the model using a Keras lambda layer (code line 70). Then the images are cropped using a Keras cropping2D layer (code line 72). 
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in order to reduce overfitting (model.py lines 80). 
 
 One convolutional layer is removed from the original Nvidia net to reduce overfitting as well.
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 85-86). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 85).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road, reversed direction driving, and training on the 2nd track. 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road, reversed direction driving. Training on the 2nd track was used initially, but discarded at the end because it can add some difficulties when further generating the appropriate amount of data for the vehicle turning at tricky places such as the bridge.  
 
 For details about how I created the training data, see the next section. 
 
@@ -116,10 +116,6 @@ The final model architecture (model.py lines 18-24) consisted of a convolution n
 | Fully connected       | output 10                                     |
 | Fully connected       | output 1                                      |
 
-Here is a visualization of the architecture
-
-![alt text][image1]
-
 #### 3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I first recorded three laps on track one using center lane driving. Here is an example image of center lane driving captured by the center camera:
@@ -145,4 +141,4 @@ After the collection process, I had X number of data points. I then preprocessed
 
 I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as the decrease rate on both the training accuracy and validation accuracy became very small. In addition, the trained network was able to guide the vehicle to drive several laps autonomously. I used an adam optimizer so that manually training the learning rate wasn't necessary.
